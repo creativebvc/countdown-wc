@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BVC Open House Countdown - Welcome Centre</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent-warm: #f5ad57;
+      --accent-link: #99daff;
+      --text-primary: #ffffff;
+      --hairline: rgba(255, 255, 255, 0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      height: 100vh; width: 100vw;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-primary);
+      background: linear-gradient(45deg, #2e2baf 0%, #102a58 100%);
+      background-size: 100% 100%;
+      display: flex; justify-content: center; align-items: center;
+      overflow: hidden;
+      user-select: none; -webkit-user-select: none;
+    }
+
+    /* ========================================
+       STAGE
+       920 wide inside 1080, leaving 80px of side
+       margin. Height is content-driven and the
+       body centres it.
+       ======================================== */
+    .stage { width: 920px; flex-shrink: 0; }
+
+    /* ========================================
+       BAND 1 — WHAT AND WHEN
+       ======================================== */
+    .eyebrow {
+      font-size: 40px; font-weight: 600; line-height: 36px;
+      text-transform: uppercase; letter-spacing: 5px;
+      color: #ffcf99;
+    }
+
+    .headline-wrap { margin-top: 48px; }
+
+    /* Set to span the rule exactly. Poppins Bold's
+       "Open House" inks 6.122em wide, so at 156px
+       with -4 tracking the glyph run measures 919
+       of the 920 rail. The -5px pulls the O's left
+       side bearing (0.033em) off the rail so the
+       ink starts flush, not the advance box. */
+    .headline {
+      display: inline-block;
+      font-size: 156px; font-weight: 700; line-height: 148px;
+      letter-spacing: -4px;
+      white-space: nowrap;
+      margin-left: -5px;
+      color: var(--accent-warm); /* fallback if background-clip is unsupported */
+      background: linear-gradient(45deg, #f5ad57 0%, #ff4c75 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .when-date {
+      font-size: 68px; font-weight: 600; line-height: 78px;
+      letter-spacing: -0.5px;
+      margin-top: 96px;
+    }
+
+    .when-time {
+      font-size: 44px; font-weight: 400; line-height: 52px;
+      opacity: 0.72;
+      margin-top: 16px;
+    }
+
+    /* ========================================
+       RULES — full rail width
+       ======================================== */
+    .rule {
+      width: 100%; height: 1px;
+      background: var(--hairline);
+      margin-top: 120px;
+    }
+
+    /* ========================================
+       BAND 2 — THE COUNT
+       Cells shrink to their content and spread edge
+       to edge, so DAYS sits on the rail and SECONDS
+       ends flush right.
+       ======================================== */
+    .unit-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 120px;
+    }
+
+    .cell { text-align: center; }
+
+    .cell-value {
+      color: #ffcf99;
+      font-size: 152px; font-weight: 600; line-height: 158px;
+      letter-spacing: -2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cell-label {
+      font-size: 32px; font-weight: 600; line-height: 38px;
+      text-transform: uppercase; letter-spacing: 4px;
+      opacity: 0.55;
+      margin-top: 18px;
+    }
+
+    /* Event-day state, sized to hold the row's place */
+    .live-block {
+      display: none;
+      align-items: center;
+      height: 214px;
+      margin-top: 120px;
+      font-size: 110px; font-weight: 700; letter-spacing: -4px;
+    }
+
+    .live-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #4ade80;
+      margin-right: 34px;
+      animation: breathe 2.4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%   { transform: scale(1); opacity: 1; }
+      50%  { transform: scale(0.78); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .stage.is-live .unit-row { display: none; }
+    .stage.is-live .live-block { display: flex; }
+
+    /* ========================================
+       BAND 3 — THE ACTION
+       ======================================== */
+    .cta-label {
+      font-size: 32px; font-weight: 600; line-height: 38px;
+      text-transform: uppercase; letter-spacing: 5px;
+      opacity: 0.62;
+      margin-bottom: 12px;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 120px;
+    }
+
+    .cta-copy {
+      flex: 1 1 auto;
+    }
+
+    /* Line one measures 643 against the 680 left by
+       a 200px QR and a 40px gap. */
+    .cta-url {
+      font-size: 44px; font-weight: 600; line-height: 52px;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+      color: var(--accent-link);
+    }
+
+    .cta-qr {
+      width: 200px;
+      height: 200px;
+      display: block;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 200px;
+      margin-left: 40px;
+    }
+
+    /* ========================================
+       ENTRANCE CASCADE
+       transform + opacity only
+       ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      animation: reveal 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .d1 { animation-delay: 0ms; }
+    .d2 { animation-delay: 120ms; }
+    .d3 { animation-delay: 240ms; }
+    .d4 { animation-delay: 360ms; }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage" id="stage">
+
+    <div class="reveal d1">
+      <div class="eyebrow">Don't miss our next</div>
+      <div class="headline-wrap"><span class="headline">Open House</span></div>
+    </div>
+
+    <div class="reveal d2">
+      <div class="when-date">Saturday, October 3, 2026</div>
+      <div class="when-time">Doors open at 10:00 AM</div>
+    </div>
+
+    <div class="rule reveal d3"></div>
+
+    <div class="unit-row reveal d3">
+      <div class="cell">
+        <div class="cell-value" id="val-days">--</div>
+        <div class="cell-label">Days</div>
+      </div>
+      <div class="cell">
+        <div class="cell-value" id="val-hours">--</div>
+        <div class="cell-label">Hours</div>
+      </div>
+      <div class="cell">
+        <div class="cell-value" id="val-minutes">--</div>
+        <div class="cell-label">Minutes</div>
+      </div>
+      <div class="cell">
+        <div class="cell-value" id="val-seconds">--</div>
+        <div class="cell-label">Seconds</div>
+      </div>
+    </div>
+
+    <div class="live-block" id="live-block">
+      <span class="live-dot"></span>Happening now
+    </div>
+
+    <div class="rule reveal d4"></div>
+
+    <div class="reveal d4">
+      <div class="cta-row">
+        <div class="cta-copy">
+          <div class="cta-label">Register at</div>
+          <div class="cta-url">choose.bowvalleycollege.ca/<br>open-house</div>
+        </div>
+        <img class="cta-qr"
+             src="assets/QRCODE.svg"
+             alt="QR code for Open House registration"
+             onerror="this.style.visibility='hidden';">
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Event: Saturday, October 3, 2026, 10:00 AM local (Calgary).
+    // Built from date parts, not an ISO string -- older TV browsers
+    // parse ISO offsets inconsistently and can return NaN.
+    var EVENT_YEAR = 2026;
+    var EVENT_MONTH = 9;   // 0-indexed: 9 = October
+    var EVENT_DAY = 3;
+    var EVENT_HOUR = 10;
+    var EVENT_MINUTE = 0;
+
+    var elDays = document.getElementById('val-days');
+    var elHours = document.getElementById('val-hours');
+    var elMinutes = document.getElementById('val-minutes');
+    var elSeconds = document.getElementById('val-seconds');
+    var elStage = document.getElementById('stage');
+
+    function pad(num) {
+      return num < 10 ? '0' + num : '' + num;
+    }
+
+    function updateCountdown() {
+      var eventTime = new Date(EVENT_YEAR, EVENT_MONTH, EVENT_DAY, EVENT_HOUR, EVENT_MINUTE, 0).getTime();
+      var now = new Date().getTime();
+      var distance = eventTime - now;
+
+      if (distance <= 0) {
+        elStage.className = 'stage is-live';
+        return;
+      }
+
+      elStage.className = 'stage';
+
+      var days = Math.floor(distance / 86400000);
+      var hours = Math.floor((distance % 86400000) / 3600000);
+      var minutes = Math.floor((distance % 3600000) / 60000);
+      var seconds = Math.floor((distance % 60000) / 1000);
+
+      elDays.innerText = '' + days;
+      elHours.innerText = pad(hours);
+      elMinutes.innerText = pad(minutes);
+      elSeconds.innerText = pad(seconds);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    console.log('Open House countdown initialized (portrait)');
+  </script>
+</body>
+</html>
